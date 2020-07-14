@@ -25,11 +25,11 @@ use crate::exp::exp_file_lock_json::main_file_lock_json;
 use crate::exp::exp_build_file::main_build_file;
 
 pub mod exp;
-
 fn main() {
     // main_file_lock_json();
     // main_hashmap();
     // main_exp_vec();
     // main_file_lock_json();
+    fil_logger::init();
     main_build_file();
 }
