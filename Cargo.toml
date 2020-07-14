@@ -1,0 +1,7 @@
+[workspace]
+
+members = [
+    "sky_exp",
+    "lib1",
+]
+
