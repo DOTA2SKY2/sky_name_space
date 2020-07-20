@@ -40,3 +40,4 @@ pub mod exp_painc;
 pub mod exp_file_lock_json;
 pub mod exp_drop;
 pub mod exp_build_file;
+pub mod exp_arc;

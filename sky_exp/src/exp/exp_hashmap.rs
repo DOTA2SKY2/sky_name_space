@@ -1,7 +1,7 @@
-use std::ops::{AddAssign, MulAssign};
+// use std::ops::{AddAssign, MulAssign};
 use std::sync::Mutex;
 use std::collections::HashMap;
-use syn::Error;
+// use syn::Error;
 
 #[allow(dead_code)]
 pub fn main_hashmap() {

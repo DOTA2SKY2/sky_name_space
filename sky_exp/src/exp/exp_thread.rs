@@ -1,12 +1,14 @@
-use std::thread;
+use std::{thread, process};
 use std::sync::{Mutex, Arc, mpsc};
 use std::time::Duration;
+use rayon::prelude::*;
 
 #[allow(dead_code)]
 pub fn main_thread() {
     // test1();
     // test2();
-    test4();
+    // test4();
+    test5();
 }
 
 /**
@@ -162,11 +164,10 @@ fn test4() {
     });
     loop {
         let val = rx.try_recv();
-        if let Ok(res) = val{
+        if let Ok(res) = val {
             dbg!(res);
-           // thread::sleep(Duration::from_secs(2))
-        }else {
-
+            // thread::sleep(Duration::from_secs(2))
+        } else {
             dbg!("为空");
             thread::sleep(Duration::from_secs(1));
         }
@@ -178,3 +179,18 @@ fn test4() {
 }
 
 
+fn test5() {
+    let mut it_sky:usize = 0;
+    let nn :usize = 6;
+    let groth_proofs_list = (3..nn)
+        .into_par_iter()
+        .enumerate()
+        .map(|(k, v)| {
+            println!("进程 = {:?}; 线程 = {:?}；",process::id(), thread::current().id());
+            println!("k = {:?}; v = {:?}；",k, v);
+            // it_sky = 1;
+            1
+        })
+        .collect::<Vec<_>>();
+
+}

@@ -1,14 +1,14 @@
 use std::thread;
 use std::sync::mpsc::channel;
-use std::collections::VecDeque;
+// use std::collections::VecDeque;
 use std::time::Duration;
 use rand::Rng;
 use std::sync::mpsc::Receiver;
 use std::sync::mpsc::Sender;
-use std::thread::Thread;
+// use std::thread::Thread;
 use std::sync::{Arc, Mutex};
-use std::marker::Send;
-use std::cell::RefCell;
+// use std::marker::Send;
+// use std::cell::RefCell;
 
 pub fn main_channel_thread_multiple() {
     test();
@@ -27,7 +27,7 @@ enum TradeData{
     RtnOrder(String),
     RtnTrade(String),
 }
-trait Get_id{
+trait GetId {
     fn get_request_id(&self)-> u32;
 }
 
@@ -105,7 +105,7 @@ impl Strategy{
     }
 }
 
-impl Get_id for Strategy{
+impl GetId for Strategy{
     fn get_request_id(&self)-> u32{
         let lock = self.lock.clone();
         let temp = *lock.lock().unwrap();
@@ -148,28 +148,28 @@ fn simulate_send(tx:Sender<TradeData>,n_thread:u32){
                 println!("thost send info: thread id :{:?} ,次数 {:?} ",i,n);
                 thread::sleep(Duration::from_millis(500));
                 match rand_value {
-                    0...600 => {
+                    0..=600 => {
                         match rand_value{
-                            0...100 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
-                            100...300=> tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
-                            300...400=> tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
+                            0..=100 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
+                            100..=300=> tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
+                            300..=400=> tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
                             _ =>tx.send(TradeData::RtnMarketData("ag".to_string())).unwrap(),
                         }
                     },
 
-                    600...900 => {
+                    600..=900 => {
                         match rand_value{
-                            600...700 =>tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
-                            700...750 =>tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
-                            750...800 =>tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
+                            600..=700 =>tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
+                            700..=750 =>tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
+                            750..=800 =>tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
                             _ =>tx.send(TradeData::RtnOrder("ag".to_string())).unwrap(),
                         }
                     },
                     _ => {
                         match rand_value{
-                            900...920 =>tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
-                            920...940 =>tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
-                            940...960 =>tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
+                            900..=920 =>tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
+                            920..=940 =>tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
+                            940..=960 =>tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
                             _ =>tx.send(TradeData::RtnTrade("ag".to_string())).unwrap(),
                         }
 
