@@ -11,7 +11,8 @@ pub fn main_exp_vec() {
     // test_7();
     // test_8();
     // test_10();
-    test_12();
+    // test_13();
+    slice_test1();
 }
 
 #[allow(dead_code)]
@@ -241,9 +242,81 @@ fn test_12() {
 
 }
 
+#[derive(Clone, Debug,Copy)]
+struct SkyStruct{
+    a:i32,
+}
+
+fn test_13() {
+    let  struct_1 = SkyStruct{
+        a:1
+    };
+
+    let  struct_2 = SkyStruct{
+        a:2
+    };
+
+    let mut list:Vec< SkyStruct> = vec![struct_1, struct_2];
+    // let sky = list[0];
+    // sky.a = 100;
+
+    let sky1 = list.get_mut(0).unwrap();
+    sky1.a = 200;
+    // *sky1.a = 200;
+    list_test(&mut list);
+
+    println!( "{:?}",list.as_slice());
+
+    let sky1 = list.get_mut(0).unwrap();
+    println!("sky1 = {:?}",sky1);
+    // for  in list {
+    //
+    // }
+}
+
+fn list_test(cs :&mut Vec<SkyStruct>){
+   let sky = cs.get_mut(0).unwrap();
+    println!("{:?}",sky);
+}
+
 
 // pub struct Hugo{
 //     #[warn(dead_code)]
 //     aa:usize,
 //     bb:usize
 // }
+
+fn slice_test(){
+    let mut slice = [1, 2, 3, 4, 5];
+    {
+        let (left, right) = slice.split_at_mut(2);
+        left.copy_from_slice(&right[1..]);
+    }
+    assert_eq!(slice, [4, 5, 3, 4, 5]);
+}
+
+
+fn slice_test1(){
+    let mut slice = vec![1, 2, 3, 4, 5];
+    {
+        let mut  start:Vec<i32> = vec![66,55,77777];
+        // start.to_vec()
+        // let  (mut left,mut  right) = slice.split_at(2);
+        // let  (left, right) = slice.split_at(2);
+        let mut  right = slice.split_off(2);
+        // let mut  right = slice.(2);
+        // println!("left = {:?}",left);
+        println!("right = {:?}",right);
+        // start.append(right.to_vec());
+        // start.extend_from_slice(right);
+        start.extend(right);
+        println!("start = {:?}",start);
+        // start.
+        // start.copy_from_slice(right);
+        // left.copy_from_slice(&right[1..]);
+        // left.copy_from_slice(&right[1..]);
+
+    }
+    // println!()
+    // assert_eq!(slice, [4, 5, 3, 4, 5]);
+}

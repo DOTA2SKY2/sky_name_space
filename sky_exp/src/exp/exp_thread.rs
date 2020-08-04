@@ -1,14 +1,15 @@
 use std::{thread, process};
-use std::sync::{Mutex, Arc, mpsc};
+use std::sync::{Mutex, Arc, mpsc, RwLock};
 use std::time::Duration;
 use rayon::prelude::*;
+use std::thread::JoinHandle;
 
 #[allow(dead_code)]
 pub fn main_thread() {
     // test1();
     // test2();
     // test4();
-    test5();
+    test7();
 }
 
 /**
@@ -194,3 +195,147 @@ fn test5() {
         .collect::<Vec<_>>();
 
 }
+
+#[derive(Debug)]
+struct Sky {
+    a: i32,
+    b: i32,
+}
+
+fn test6() {
+
+    let data = RwLock::new(Sky{
+        a: 0,
+        b: 1,
+    });
+
+    // let data1 = data.clone();
+
+    // for i in 0..10 {
+    //     // let data=data.lock().unwrap();//没有实现Send
+    //     let data = data.clone();
+    //     thread::spawn(move || {
+    //         let mut data = data.lock().unwrap();
+    //         // let mut sky = *data;
+    //         data.a = 100;
+    //         data.b = 200;
+    //
+    //         println!(" data = {:?}", data);
+    //
+    //     });
+    // }
+
+
+    let groth_proofs_list = (0..10)
+        .into_par_iter()
+        .enumerate()
+        .map(|(k, v)| {
+
+            let mut data1 = data.write().unwrap();
+            data1.a = k as i32;
+            data1.b = v as i32;
+
+            thread::sleep(Duration::from_secs(1));
+            println!("进程 = {:?}; 线程 = {:?}；k = {:?}；data1 = {:?}",process::id(), thread::current().id(), k, data1);
+            drop(data1);
+
+            // let mut data2 = data.read().unwrap();
+            // // data2.a = k as i32;
+            // // data2.b = v as i32;
+            //
+            // println!("进程 = {:?}; 线程 = {:?}；data2 = {:?}",process::id(), thread::current().id(),data2);
+            // println!("进程 = {:?}; 线程 = {:?}；data2 = {:?}",process::id(), thread::current().id(),*data2);
+            // drop(data2);
+            // thread::sleep(Duration::from_secs(1));
+            // println!("k = {:?}; v = {:?}；",k, v);
+            // // it_sky = 1;
+            // 1
+        })
+        .collect::<Vec<_>>();
+
+    let groth_proofs_list = (0..100)
+        .into_par_iter()
+        .enumerate()
+        .map(|(k, v)| {
+            // let mut data1 = data.write().unwrap();
+            // data1.a = k as i32;
+            // data1.b = v as i32;
+            //
+            //
+            // println!("进程 = {:?}; 线程 = {:?}；data1 = {:?}",process::id(), thread::current().id(),data1);
+            // drop(data1);
+            let mut data2 = data.read().unwrap();
+            // data2.a = k as i32;
+            // data2.b = v as i32;
+
+            println!("进程 = {:?}; 线程 = {:?}；data2 = {:?}",process::id(), thread::current().id(),data2);
+            println!("进程 = {:?}; 线程 = {:?}；data2 = {:?}",process::id(), thread::current().id(),*data2);
+            thread::sleep(Duration::from_secs(1));
+            drop(data2);
+
+            // println!("k = {:?}; v = {:?}；",k, v);
+            // // it_sky = 1;
+            // 1
+        })
+        .collect::<Vec<_>>();
+    thread::sleep(Duration::from_secs(10));
+
+
+}
+
+fn test7() {
+
+    let dataLock =Arc::new(RwLock::new(Sky{
+        a: 0,
+        b: 1,
+    })) ;
+
+    let mut  list:Vec<JoinHandle<()>>  = vec![];
+    for i in 0..10 {
+        let c = dataLock.clone();
+      let sky = thread::spawn( move|| {
+            thread::sleep(Duration::from_secs(1 * (i as u64) ));
+          println!("进程 = {:?}; 线程 = {:?}；index = {:?}； write before",process::id(), thread::current().id(), i);
+            let mut data = c.write().unwrap();
+            thread::sleep(Duration::from_secs(2 * (i as u64) ));
+            println!("进程 = {:?}; 线程 = {:?}；index = {:?}； write",process::id(), thread::current().id(), i);
+            data.a = i;
+            data.b = i;
+          drop(data);
+        });
+        list.push(sky);
+    }
+
+
+
+    for i in 0..10 {
+        let c = dataLock.clone();
+        let sky = thread::spawn(move || {
+            // thread::sleep(Duration::from_secs(1 ));
+            println!("进程 = {:?}; 线程 = {:?}；index = {:?}；read before ",process::id(), thread::current().id(), i);
+            let data = c.read().unwrap();
+                println!("进程 = {:?}; 线程 = {:?}；index = {:?}；read ok data2 = {:?}",process::id(), thread::current().id(), i, data.a);
+        });
+        thread::sleep(Duration::from_secs(1 ));
+        list.push(sky);
+    }
+
+    for item in list {
+        item.join().unwrap()
+    }
+
+
+
+    // list.iter().map(|new_thread|{
+    //     new_thread.join().unwrap();
+    // });
+
+
+    // 等待新建线程先执行
+    // new_thread.join().unwrap();
+
+}
+
+
+
+

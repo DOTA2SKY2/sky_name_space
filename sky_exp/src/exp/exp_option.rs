@@ -1,6 +1,6 @@
 #[allow(dead_code)]
 pub fn main_option() {
-    test_1();
+    test_4();
     // test_2();
     // test_3();
 }
@@ -19,7 +19,7 @@ fn test_1() {
     }
     let sky1 = &sky.unwrap();
     println!("Option unwrap() = {}", sky1);
-   let option = test_1_1(sky);
+    let option = test_1_1(sky);
     println!("test_1_1  = {}", option.unwrap());
     println!("test_1_1  = {}", sky.unwrap());
 }
@@ -52,25 +52,53 @@ fn test_3() {
 */
 #[allow(dead_code)]
 fn test_1_1(x: Option<i32>) -> Option<i32> {
-    match x{
-        None=>{
+    match x {
+        None => {
             None
-        },
-        Some(x1)=>{
+        }
+        Some(x1) => {
             Some(x1)
-        },
+        }
     }
 }
 
-//
-// #[allow(dead_code)]
-// fn test_1_2() -> Option<String> {
-//     match x {
-//         None=>{
-//             None
-//         },
-//         Some(x1)=>{
-//             Some(String::from("wwww"))
-//         },
-//     }
-// }
+struct AA {
+    c: i32,
+}
+
+impl Drop for AA {
+    fn drop(&mut self) {
+        println!("AA drop")
+    }
+}
+
+struct Sky {
+    a: i32,
+    b: AA,
+}
+
+impl Drop for Sky {
+    fn drop(&mut self) {
+        println!("Sky drop")
+    }
+}
+
+//if let控制流 赋值再判断
+#[allow(dead_code)]
+fn test_4() {
+    test_5();
+    println!("test_4");
+}
+
+fn test_5() {
+    let sky: Option<Sky> = Option::Some(Sky {
+        a: 1,
+        b: AA {
+            c: 11,
+        },
+    });
+    let sky11 = &sky;
+
+    let sky12 = sky11;
+    println!("test_5");
+}

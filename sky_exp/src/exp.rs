@@ -41,3 +41,5 @@ pub mod exp_file_lock_json;
 pub mod exp_drop;
 pub mod exp_build_file;
 pub mod exp_arc;
+pub mod exp_trait;
+pub mod exp_once_cell;
