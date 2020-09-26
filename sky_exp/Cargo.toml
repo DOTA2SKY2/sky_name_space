@@ -12,12 +12,14 @@ repository = "https://github.com/filecoin-project/bellman"
 fil_logger = "0.1"
 log = "0.4"
 rand = "0.7"
+chrono = "0.4"
+
 
 #fs2 = { version = "0.4.3", optional = true }
 fs2 = { version = "0.4.3" }
 
 tempfile = "3"
-chrono = "0.4"
+
 lazy_static = "1.4.0"
 
 syn = "1.0.16"
@@ -30,6 +32,8 @@ tempdir = "0.3"
 rayon = "1.3.0"
 
 once_cell = "1.3.1"
+[dependencies.time]
+version = "0.1.43"
 
 [build-dependencies]
 vergen = "3"

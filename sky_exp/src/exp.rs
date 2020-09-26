@@ -43,3 +43,4 @@ pub mod exp_build_file;
 pub mod exp_arc;
 pub mod exp_trait;
 pub mod exp_once_cell;
+pub mod exp_max_thread;

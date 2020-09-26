@@ -6,6 +6,7 @@ pub fn main_slice() {
 
 fn test_1() {
     let str = String::from("abcdefg");
+    println!("test_1 [0..0] = {}", &str[0..=0]);
     println!("test_1 [0..4] = {}", &str[0..4]);
     println!("test_1 [0..=4] = {}", &str[0..=4]);
     println!("test_1 [..=4] = {}", &str[..=4]);

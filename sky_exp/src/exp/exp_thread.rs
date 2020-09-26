@@ -3,13 +3,15 @@ use std::sync::{Mutex, Arc, mpsc, RwLock};
 use std::time::Duration;
 use rayon::prelude::*;
 use std::thread::JoinHandle;
+use rayon::ThreadPoolBuilder;
 
 #[allow(dead_code)]
 pub fn main_thread() {
     // test1();
     // test2();
     // test4();
-    test7();
+    // test8();
+    cross_pool_busy1();
 }
 
 /**
@@ -335,6 +337,63 @@ fn test7() {
     // new_thread.join().unwrap();
 
 }
+
+
+
+fn test8() {
+
+    let  dataLock =Arc::new(RwLock::new(Sky{
+        a: 0,
+        b: 1,
+    })) ;
+    // jj (&'static dataLock);
+
+}
+
+fn jj(lll : &'static RwLock<Sky>)
+{
+    let sky = thread::spawn( move|| {
+       let uu = lll.clone();
+    });
+    // let s =lll;
+}
+
+fn cross_pool_busy() {
+    let pool1 = ThreadPoolBuilder::new().num_threads(1).build().unwrap();
+    let pool2 = ThreadPoolBuilder::new().num_threads(1).build().unwrap();
+
+    let n: i32 = 100;
+    let sum: i32 = pool1.install(move || {
+        // Each item will block on pool2, but pool1 can continue processing other work from the
+        // parallel iterator in the meantime. There's a chance that pool1 will still be awake to
+        // see the latch set without being tickled, and then it will drop that stack job. The latch
+        // internals must not assume that the job will still be alive after it's set!
+        (1..=n)
+            .into_par_iter()
+            .map(|i| pool2.install(move || i))
+            .sum()
+    });
+    assert_eq!(sum, n * (n + 1) / 2);
+}
+fn cross_pool_busy1() {
+    let pool1 = ThreadPoolBuilder::new().num_threads(3).build().unwrap();
+    let n: i32 = 100;
+    let sum: i32 = pool1.install(move || {
+        // Each item will block on pool2, but pool1 can continue processing other work from the
+        // parallel iterator in the meantime. There's a chance that pool1 will still be awake to
+        // see the latch set without being tickled, and then it will drop that stack job. The latch
+        // internals must not assume that the job will still be alive after it's set!
+        (1..=n)
+            .into_par_iter()
+            .map(|i|{
+                println!("进程 = {:?}; 线程 = {:?}；", process::id(), thread::current().id());
+                i })
+            .sum()
+    });
+    drop(pool1);
+    assert_eq!(sum, n * (n + 1) / 2);
+}
+
 
 
 
