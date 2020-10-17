@@ -12,7 +12,7 @@ impl Drop for DerefExample {
     }
 }
 fn test() {
-    for j in 0..10 {
+    for _j in 0..10 {
         thread::spawn(move||{
             test2();
             thread::sleep(Duration::from_secs(2))
@@ -22,7 +22,7 @@ fn test() {
 }
 
 fn test2(){
-    let sky = DerefExample{
+    let _sky = DerefExample{
 
     };
 }

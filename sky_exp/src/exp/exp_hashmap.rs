@@ -7,10 +7,10 @@ use std::collections::HashMap;
 pub fn main_hashmap() {
     test_1();
 }
-const GpuVerifyCnt: i32 = 1;
-const GpuWinningPostCnt: i32 = 1;
-const GpuP2Cnt: i32 = 2;
-const GpuC2Cnt: i32 = 4;
+const GPU_VERIFY_CNT: i32 = 1;
+const GPU_WINNING_POST_CNT: i32 = 1;
+const GPU_P2CNT: i32 = 2;
+const GPU_C2CNT: i32 = 4;
 // pub struct Device{
 //     id:i32
 // }
@@ -28,21 +28,21 @@ lazy_static::lazy_static! {
 #[allow(dead_code)]
 fn init_device_pools() -> Mutex<HashMap<i32, (GpuType ,i32)>>{
    let device_pools: Mutex<HashMap<i32, (GpuType ,i32)>> = Mutex::new(HashMap::new()) ;
-    let mut gpuType = GpuType::P2;
+    let mut gpu_type = GpuType::P2;
     for i in 0..6 {
 
-        if i < GpuP2Cnt {
-            gpuType = GpuType::P2;
+        if i < GPU_P2CNT {
+            gpu_type = GpuType::P2;
             // device_pools.lock().unwrap().insert(*value, (GpuType::P2, 0));
         } else {
-            gpuType = GpuType::C2;
+            gpu_type = GpuType::C2;
         }
         // let device = Device{
         //     id :1,
         // };
 
-        device_pools.lock().unwrap().insert(i, (gpuType, 0));
-        // println!("GPU BUS_ID  = {:?}, GpuType = {:?}",value.info_raw(0x4008), gpuType);
+        device_pools.lock().unwrap().insert(i, (gpu_type, 0));
+        // println!("GPU BUS_ID  = {:?}, GpuType = {:?}",value.info_raw(0x4008), gpu_type);
     }
     device_pools
 }
@@ -58,12 +58,12 @@ fn test_1(){
     }
 }
 
-pub fn get_device(gpuType: GpuType) -> Result<i32,&'static str> {
+pub fn get_device(gpu_type: GpuType) -> Result<i32,&'static str> {
     for (k, v) in GET_DEVICE_POOLS.lock().unwrap().iter_mut() {
         // println!("v.0 ={:?}",v.0);
         // println!("v.1 ={:?}",v.1);
         // println!("k ={:?}",k);
-        if v.0 as i32 == gpuType as i32 {
+        if v.0 as i32 == gpu_type as i32 {
             if v.1 == 0 {
                 v.1 = 1;
                 // println!("uuuu v.0 ={:?}",v.0);

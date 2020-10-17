@@ -21,7 +21,7 @@ impl Foo for A {
 }
 
 pub fn main_arc() {
-    let mut cs = A { foo: 8 };
+    let cs: A = A { foo: 8 };
     let a = Arc::new(Mutex::new(cs));
 
     let mut map: HashMap<u8, Arc<Mutex<dyn Foo>>> = HashMap::new();
@@ -34,7 +34,7 @@ pub fn main_arc() {
         });
     }
     let a1 = map.get(&8u8).expect("boom").clone();
-    let mut data = a1.lock().unwrap();
+    let _sl = a1.lock().unwrap();
     //  let data1 = *data ;
     // let re = cs.get_foo();
     // println!("{:?}",re);

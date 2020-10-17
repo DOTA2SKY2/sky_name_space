@@ -32,8 +32,8 @@ impl UserFn {
 }
 
 
-fn ttt(bB:String){
-    println!("b = {:?}", bB);
+fn ttt(b_b:String){
+    println!("b = {:?}", b_b);
 
 
 
@@ -41,7 +41,7 @@ fn ttt(bB:String){
 
 //1 - 结构体赋值 逐个赋值
 fn test_1() {
-    let mut st = UserFn {
+    let _st = UserFn {
         name: String::from("User1"),
         count: 1,
         age: 4,

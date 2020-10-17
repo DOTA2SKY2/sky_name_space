@@ -1,5 +1,5 @@
 // static GIT_VERSION_FILE: &str = include_str!("git_version_file");
-use log::{info};
+// use log::{info};
 
 // #[macro_use]
 // extern crate lazy_static;

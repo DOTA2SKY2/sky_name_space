@@ -1,7 +1,7 @@
-use std::ops::{AddAssign, MulAssign};
-use std::time::SystemTime;
-use std::{process, thread};
+
 use log::info;
+use std::time::SystemTime;
+use std::ops::{AddAssign, MulAssign};
 
 // use std::str;
 #[allow(dead_code)]
@@ -22,7 +22,8 @@ pub fn main_exp_vec() {
     // vec_for3();
     // vec_for4();
     // vec_for5();
-    vec_for8();
+    // vec_for8();
+    vec_for9();
 }
 
 #[allow(dead_code)]
@@ -184,11 +185,11 @@ fn test_9() {
 
 
 fn test_10() {
-    let sky = [[1u8; 10]; 10];
-    let sky1 = sky.iter().as_slice();
-
-
-    let kk = &sky[..][..];
+    // let sky = [[1u8; 10]; 10];
+    // let sky1 = sky.iter().as_slice();
+    //
+    //
+    // let kk = &sky[..][..];
 
     // test_11(&[1,2,3,4]);
 }
@@ -215,7 +216,7 @@ fn test_12() {
     s[3] = 55;
     s[4] = 66;
 
-    let mut s1 = [0 as u8; 12];
+    let s1 = [0 as u8; 12];
     // s[0] = b'h';
     // s[1] = b'e';
     // s[2] = b'l';
@@ -312,8 +313,8 @@ fn slice_test1() {
         println!("split_at left = {:?}", left);
         println!("split_at right = {:?}", right);
 
-        let (left, right) = slice.split_at(2);
-        let mut right = slice.split_off(2);
+        // let (left, right) = slice.split_at(2);
+        let right = slice.split_off(2);
         // let mut  right = slice.(2);
         // println!("left = {:?}",left);
         println!("right = {:?}", right);
@@ -341,7 +342,7 @@ fn slice_test2() {
     // println!("{:?}",slice);
     //  slice.truncate(3);
     // slice.reverse();
-    for i in 0..slice.len() {
+    for _i in 0..slice.len() {
         println!("{:?}", slice.pop());
     }
 }
@@ -492,20 +493,20 @@ fn vec_for5() {
 
     let time = SystemTime::now();
     // let mut res1 = vec![0;2000 * 1000 * 1000];
-    let res = sky.iter().map(|&x| {
+    let _res = sky.iter().map(|&x| {
         x
     }).collect::<Vec<_>>();
     info!(" map 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
 
     let time = SystemTime::now();
-    let res1 = sky.iter().filter(|&&x| {
+    let _res1 = sky.iter().filter(|&&_x| {
         true
     }).collect::<Vec<_>>();
     info!(" filter 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
     let time = SystemTime::now();
-    let res1 = sky.iter().filter_map(|&x| {
+    let _res1 = sky.iter().filter_map(|&x| {
         Some(x)
     }).collect::<Vec<_>>();
     info!(" filter_map 用时 = {:?} s", time.elapsed().unwrap().as_secs());
@@ -535,7 +536,7 @@ fn vec_for6() {
     //      println!("index = {:?} ; value = {:?}",value ,value);
     //     (value,value)
     //  }).collect::<Vec<_>>();
-    let list = sky1.iter().zip(sky.iter()).map(|(v1, v2)| {
+    let _list = sky1.iter().zip(sky.iter()).map(|(v1, v2)| {
         println!("v1 = {:?} ; v2 = {:?}", v1, v2);
         (v1, v2)
     })
@@ -559,7 +560,7 @@ fn vec_for7() {
     }).collect::<Vec<_>>();
     // info!("i 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
-    let time = SystemTime::now();
+    let _time = SystemTime::now();
     // let mut res = vec![];
     let mut res = Vec::with_capacity(num);
     // res.reserve(num);
@@ -582,7 +583,7 @@ fn vec_for7() {
     let num1  = 100 * 1000 * 1000;
     let num2  = 100 * 1000 * 1000;
     // let num = 20;
-    let mut sky1 = (0..num1).into_iter().map(|e| {
+    let sky1 = (0..num1).into_iter().map(|e| {
         let i = e % 1;
         i
     }).collect::<Vec<_>>();
@@ -642,26 +643,26 @@ fn vec_for8() {
     }).collect::<Vec<_>>();
 
     let time = SystemTime::now();
-    list.iter().for_each(|e| {
+    list.iter().for_each(|_e| {
 
     });
     info!("for_each 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
     let time = SystemTime::now();
-    list.iter().for_each(|e| {
+    list.iter().for_each(|_e| {
 
     });
     info!("for_each 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
 
     let time = SystemTime::now();
-    let sky = list.iter().map(|&e| {
+    let _sky = list.iter().map(|&e| {
         let i = e % 3;
         i
     }).collect::<Vec<_>>();
     info!("map 用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
-    let time = SystemTime::now();
+    let _time = SystemTime::now();
     // let mut res = vec![];
     let mut res = Vec::with_capacity(num);
     // res.reserve(num);
@@ -680,5 +681,11 @@ fn vec_for8() {
     }
     info!("with_capacity  用时 = {:?} s", time.elapsed().unwrap().as_secs());
 
+}
+
+
+fn vec_for9() {
+    let list:Vec<u8> = vec![107, 192, 31, 128, 237, 168, 195, 233, 66, 233, 51, 23, 210, 40, 238, 61, 83, 52, 105, 18, 196, 139, 197, 234, 238, 32, 54, 175, 70, 40, 25, 27];
+    info!("list =   {:x?}", list);
 }
 

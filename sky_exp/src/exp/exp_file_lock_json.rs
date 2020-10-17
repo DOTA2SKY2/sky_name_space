@@ -101,7 +101,7 @@ fn test() {
     println!("file init = {:?}", cfg);
     // let sky = thread::current().id() as u64;
     // letsky1:u64 =  sky.;
-    cfg.gpu_list.iter_mut().for_each(|(key, value)| {
+    cfg.gpu_list.iter_mut().for_each(|(_key, value)| {
         value.process_id = 100;
         // value.thread_id  = thread::current().id().to_string();
     });
@@ -110,7 +110,7 @@ fn test() {
     sky.thread_id = 99999;
     // cfg.gpu_list.remove(0);
     serde_json::to_writer(&mut File::create(&path).unwrap(), &cfg).unwrap();
-    let mut cfg: GpuList = serde_json::from_reader(File::open(&path).unwrap()).unwrap();
+    let cfg: GpuList = serde_json::from_reader(File::open(&path).unwrap()).unwrap();
     println!("cfgyyyy = {:?}", cfg);
 
 
@@ -162,7 +162,7 @@ fn duplicate() {
     let mut file1 =
         fs::OpenOptions::new().read(true).write(true).create(true).open(&path).unwrap();
 
-    file1.lock_exclusive();
+    file1.lock_exclusive().unwrap();
     let mut file2 = file1.duplicate().unwrap();
 // file1.truncate()
     // Write into the first file and then drop it.
@@ -187,7 +187,7 @@ fn duplicate() {
 
 fn test5() {
 
-    for i in 0..2 {
+    for _i in 0..2 {
         thread::spawn(move || {
             let path = tmp_path("1.lock");
             println!("path = {:?}", path);
@@ -205,16 +205,16 @@ fn test5() {
             }
             println!("thread = lock_exclusive ing");
             thread::sleep(Duration::from_secs(10));
-            file1.unlock();
+            file1.unlock().unwrap();
             println!("thread = lock_exclusive end");
         });
     }
 
     thread::sleep(Duration::from_secs(2));
 
-    for i in 0..1000 {
+    for _i in 0..1000 {
         let path = tmp_path("1.lock");
-        let mut file1 = File::create(path).unwrap();
+        let file1 = File::create(path).unwrap();
         let sky = file1.try_lock_exclusive();
         match sky {
             Ok(_0) => {

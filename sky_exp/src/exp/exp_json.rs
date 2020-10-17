@@ -91,9 +91,9 @@ fn test3(){
             \"p2_cnt\": 2,
             \"c2_cnt\": 2
          }";
-            file.write_all(j.as_bytes());
+            file.write_all(j.as_bytes()).unwrap();
         }
-        Ok(file) => {
+        Ok(_file) => {
 
         },
     };

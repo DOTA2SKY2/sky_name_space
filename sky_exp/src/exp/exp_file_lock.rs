@@ -25,13 +25,13 @@ lazy_static::lazy_static! {
 }
 
 fn test() {
-    for i in 0..8 {
+    for _i in 0..8 {
         let mut jj = THREAD_CNT.lock().unwrap();
         *jj += 1;
         if 6 == *jj {
             dbg!("lll");
         }
-        dbg!(jj);
+        // dbg!(jj);
     }
 }
 
@@ -66,9 +66,9 @@ fn test2() {
     //     });
     // }
     // thread::sleep(Duration::from_secs(20));
-    let lock = GPULock::lock();
+    let _lock = GPULock::lock();
     // let mut f = File::create(tmp_path(GPU_LOCK_NAME)).unwrap();
-    let mut buffer = String::new();
+    let _buffer = String::new();
     // f.read_to_string(&mut buffer);
     // println!("1111111 ={:?}", buffer);
 
@@ -87,7 +87,7 @@ impl GPULock {
         // let mut f = File::create(tmp_path(GPU_LOCK_NAME)).unwrap();
 
 
-        let mut f1 = OpenOptions::new().read(true)
+        let f1 = OpenOptions::new().read(true)
             .open(tmp_path(GPU_LOCK_NAME)).unwrap();
         // let mut buffer = String::new();
         // f1.read_to_string(&mut buffer);

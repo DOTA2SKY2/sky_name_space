@@ -1,7 +1,6 @@
 //变量
 
 // use std::time::*;
-use std::thread::sleep;
 
 use log::info;
 use chrono::NaiveTime;

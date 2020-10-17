@@ -66,19 +66,19 @@ impl Strategy{
                 let  value = self.receiver.recv().unwrap();
                 match value {
                     TradeData::RtnMarketData(_) =>{
-                        self.OnRtnMarketData(value);
+                        self.on_rtn_market_data(value);
                     },
                     TradeData::RtnOrder(_) =>{
-                        self.OnRtnOrder(value);
+                        self.on_rtn_order(value);
                     },
                     TradeData::RtnTrade(_) =>{
-                        self.OnRtnTrade(value);
+                        self.on_rtn_trade(value);
                     },
                 }
             };
         });
     }
-    fn OnRtnMarketData(&self,md:TradeData){
+    fn on_rtn_market_data(&self, md:TradeData){
         println!(" -> strategy:{:?} RtnMarketData=> recv:{:?}",self.stra_name,md);
         let rand_value:u64 = rand::thread_rng().gen_range(200,500);
         // 获取唯一ID，策略逻辑在此
@@ -87,7 +87,7 @@ impl Strategy{
         }
         thread::sleep(Duration::from_millis(rand_value));
     }
-    fn OnRtnOrder(&self,order:TradeData){
+    fn on_rtn_order(&self, order:TradeData){
         println!(" -> strategy:{:?} RtnOrder => recv:{:?}",self.stra_name,order);
         let rand_value:u64 = rand::thread_rng().gen_range(200,500);
         // 获取唯一ID
@@ -95,7 +95,7 @@ impl Strategy{
             println!("触发OnRtnOrder信号：{:?} id:{:?}",rand_value,self.get_request_id());
         }
     }
-    fn OnRtnTrade(&self,trade:TradeData){
+    fn on_rtn_trade(&self, trade:TradeData){
         println!(" -> strategy:{:?} RtnTrade=> recv:{:?}",self.stra_name,trade);
         let rand_value:u64 = rand::thread_rng().gen_range(200,500);
         // 获取唯一ID
@@ -143,39 +143,24 @@ fn simulate_send(tx:Sender<TradeData>,n_thread:u32){
         thread::spawn(move||{
             let mut n = 0;
             loop{
-                let rand_value:u32 = rand::thread_rng().gen_range(0, 1000);
+                let rand_value = rand::thread_rng().gen_range(0, 1000);
                 n = n + 1;
                 println!("thost send info: thread id :{:?} ,次数 {:?} ",i,n);
                 thread::sleep(Duration::from_millis(500));
                 match rand_value {
-                    0..=600 => {
-                        match rand_value{
-                            0..=100 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
-                            100..=300=> tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
-                            300..=400=> tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
-                            _ =>tx.send(TradeData::RtnMarketData("ag".to_string())).unwrap(),
-                        }
-                    },
-
-                    600..=900 => {
-                        match rand_value{
-                            600..=700 =>tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
-                            700..=750 =>tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
-                            750..=800 =>tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
-                            _ =>tx.send(TradeData::RtnOrder("ag".to_string())).unwrap(),
-                        }
-                    },
-                    _ => {
-                        match rand_value{
-                            900..=920 =>tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
-                            920..=940 =>tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
-                            940..=960 =>tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
-                            _ =>tx.send(TradeData::RtnTrade("ag".to_string())).unwrap(),
-                        }
-
-                    }
+                    0..=99 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
+                    100..=299 => tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
+                    300..=399 => tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
+                    400..=599 => tx.send(TradeData::RtnMarketData("ag".to_string())).unwrap(),
+                    600..=699 => tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
+                    700..=749 => tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
+                    750..=799 => tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
+                    800..=899 => tx.send(TradeData::RtnOrder("ag".to_string())).unwrap(),
+                    900..=919 => tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
+                    920..=939 => tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
+                    940..=959 => tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
+                    _ => tx.send(TradeData::RtnTrade("ag".to_string())).unwrap(),
                 };
-
             }
         });
     }
@@ -189,7 +174,7 @@ fn dispatch_data(rx:&Receiver<TradeData>,_handlers: Vec<StrategyHandler>){
             TradeData::RtnMarketData(d) =>{
                 for  handler in handlers {
                     if handler.stra_instructions.contains(&d){
-                        //strategy.OnRtnMarketData(value)
+                        //strategy.on_rtn_market_data(value)
                         let tx = handler.sender.clone();
                         tx.send(TradeData::RtnMarketData(d.to_string())).unwrap();
                         println!("dispatch:{:?}",d);

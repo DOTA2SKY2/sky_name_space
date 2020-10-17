@@ -1,4 +1,4 @@
-use std::sync::{Mutex, Arc, mpsc, RwLock};
+// use std::sync::{Mutex, Arc, mpsc, RwLock};
 use rayon::prelude::*;
 use std::thread::JoinHandle;
 use std::{thread, env};
@@ -22,8 +22,8 @@ fn test() {
         }else{
             let num = value.trim().parse::<u64>().unwrap();
             println!("起线程数 = {:?}", num);
-            let sky = vec![1; num as usize].into_par_iter()
-                .map(|prover| {
+            let _sky = vec![1; num as usize].into_par_iter()
+                .map(|_prover| {
                     let mut i = 0;
                     for _index in 0..1000 * 1000 {
                         i = 1 + 1;

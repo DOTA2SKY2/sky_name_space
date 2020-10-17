@@ -91,14 +91,14 @@ fn test_4() {
 }
 
 fn test_5() {
-    let sky: Option<Sky> = Option::Some(Sky {
-        a: 1,
-        b: AA {
-            c: 11,
-        },
-    });
-    let sky11 = &sky;
+    // let sky: Option<Sky> = Option::Some(Sky {
+    //     a: 1,
+    //     b: AA {
+    //         c: 11,
+    //     },
+    // });
+    // let sky11 = &sky;
 
-    let sky12 = sky11;
+    // let sky12 = sky11;
     println!("test_5");
 }

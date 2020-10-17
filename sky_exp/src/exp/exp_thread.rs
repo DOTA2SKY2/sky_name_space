@@ -67,7 +67,7 @@ fn test1() {
             let mut data = data.lock().unwrap();
             *data += 1;
             println!("第{:?}次：发送前#####  = {:?}", i, *data);
-            tx.send((*data)); //不同线程不阻塞，
+            tx.send((*data)).unwrap(); //不同线程不阻塞，
             println!("第{:?}次：发送后##### ", i);
         });
     }
@@ -183,9 +183,9 @@ fn test4() {
 
 
 fn test5() {
-    let mut it_sky:usize = 0;
+    let _it_sky:usize = 0;
     let nn :usize = 6;
-    let groth_proofs_list = (3..nn)
+    let _groth_proofs_list = (3..nn)
         .into_par_iter()
         .enumerate()
         .map(|(k, v)| {
@@ -228,7 +228,7 @@ fn test6() {
     // }
 
 
-    let groth_proofs_list = (0..10)
+    let _groth_proofs_list = (0..10)
         .into_par_iter()
         .enumerate()
         .map(|(k, v)| {
@@ -255,10 +255,10 @@ fn test6() {
         })
         .collect::<Vec<_>>();
 
-    let groth_proofs_list = (0..100)
+    let _groth_proofs_list = (0..100)
         .into_par_iter()
         .enumerate()
-        .map(|(k, v)| {
+        .map(|(_k, _v)| {
             // let mut data1 = data.write().unwrap();
             // data1.a = k as i32;
             // data1.b = v as i32;
@@ -266,7 +266,7 @@ fn test6() {
             //
             // println!("进程 = {:?}; 线程 = {:?}；data1 = {:?}",process::id(), thread::current().id(),data1);
             // drop(data1);
-            let mut data2 = data.read().unwrap();
+            let data2 = data.read().unwrap();
             // data2.a = k as i32;
             // data2.b = v as i32;
 
@@ -287,14 +287,14 @@ fn test6() {
 
 fn test7() {
 
-    let dataLock =Arc::new(RwLock::new(Sky{
+    let data_lock =Arc::new(RwLock::new(Sky{
         a: 0,
         b: 1,
     })) ;
 
     let mut  list:Vec<JoinHandle<()>>  = vec![];
     for i in 0..10 {
-        let c = dataLock.clone();
+        let c = data_lock.clone();
       let sky = thread::spawn( move|| {
             thread::sleep(Duration::from_secs(1 * (i as u64) ));
           println!("进程 = {:?}; 线程 = {:?}；index = {:?}； write before",process::id(), thread::current().id(), i);
@@ -311,7 +311,7 @@ fn test7() {
 
 
     for i in 0..10 {
-        let c = dataLock.clone();
+        let c = data_lock.clone();
         let sky = thread::spawn(move || {
             // thread::sleep(Duration::from_secs(1 ));
             println!("进程 = {:?}; 线程 = {:?}；index = {:?}；read before ",process::id(), thread::current().id(), i);
@@ -342,7 +342,7 @@ fn test7() {
 
 fn test8() {
 
-    let  dataLock =Arc::new(RwLock::new(Sky{
+    let _data_lock =Arc::new(RwLock::new(Sky{
         a: 0,
         b: 1,
     })) ;
@@ -352,8 +352,8 @@ fn test8() {
 
 fn jj(lll : &'static RwLock<Sky>)
 {
-    let sky = thread::spawn( move|| {
-       let uu = lll.clone();
+    let _sky = thread::spawn( move|| {
+       let _uu = lll.clone();
     });
     // let s =lll;
 }

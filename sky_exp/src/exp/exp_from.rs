@@ -163,6 +163,13 @@ fn test_box_string() {
 }
 
 
+fn test_from_struct(){
+    struct Squre{
+        with:i32,
+        height:i32
+    }
+}
+
 
 
 

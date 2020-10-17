@@ -142,8 +142,8 @@ fn test6() {
     let sky  = Arc::new(String::from("1111"));
     for id in 0..NTHREADS {
         // sender 发送端可被复制
-        let thread_tx = tx.clone();
-        let skyClone = sky.clone();
+        let _thread_tx = tx.clone();
+        let _sky_clone = sky.clone();
         // 每个线程都将通过通道来发送它的 id
         thread::spawn(move || {
             // let sk =skyClone

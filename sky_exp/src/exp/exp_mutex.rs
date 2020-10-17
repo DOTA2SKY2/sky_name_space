@@ -60,12 +60,12 @@ fn test2(){
         thread::spawn(move|| {
             let mut data=data.lock().unwrap();
             *data+=1;
-            tx.send(());
+            tx.send(()).unwrap();
         });
     }
 
     for _ in 0..10 {
-        rx.recv();
+        rx.recv().unwrap();
     }
 
     println!("data = {:?}",data);
@@ -82,7 +82,7 @@ fn  test3(){
         thread::spawn(move|| {
             // let answer=42u32;
 
-            tx.send(i);
+            tx.send(i).unwrap();
         });
     }
     for _ in 0..10 {

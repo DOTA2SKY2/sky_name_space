@@ -54,13 +54,13 @@ impl Strategy {
             stra_instructions: instrs,
         }
     }
-    fn OnRtnMarketData(&self, md: &TradeData) {
+    fn on_rtn_market_data(&self, md: &TradeData) {
         println!(" -> strategy:{:?} RtnMarketData=> recv:{:?}", self.stra_name, md);
     }
-    fn OnRtnOrder(&self, order: &TradeData) {
+    fn on_rtn_order(&self, order: &TradeData) {
         println!(" -> strategy:{:?} RtnOrder => recv:{:?}", self.stra_name, order);
     }
-    fn OnRtnTrade(&self, trade: &TradeData) {
+    fn on_rtn_trade(&self, trade: &TradeData) {
         println!(" -> strategy:{:?} RtnTrade=> recv:{:?}", self.stra_name, trade);
     }
 }
@@ -103,36 +103,23 @@ fn simulate_send(tx: Sender<TradeData>, n_thread: u32) {
         thread::spawn(move || {
             let mut n = 0;
             loop {
-                let rand_value: u32 = rand::thread_rng().gen_range(0, 1000);
+                let rand_value = rand::thread_rng().gen_range(0, 1000);
                 n = n + 1;
                 println!("rand_value:{:?} n:{:?} thread id :{:?}", rand_value, n, i);
                 thread::sleep(Duration::from_millis(300));
                 match rand_value {
-                    0..=600 => {
-                        match rand_value {
-                            0..=100 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
-                            100..=300 => tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
-                            300..=400 => tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
-                            _ => tx.send(TradeData::RtnMarketData("ag".to_string())).unwrap(),
-                        }
-                    }
-
-                    600..=900 => {
-                        match rand_value {
-                            600..=700 => tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
-                            700..=750 => tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
-                            750..=800 => tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
-                            _ => tx.send(TradeData::RtnOrder("ag".to_string())).unwrap(),
-                        }
-                    }
-                    _ => {
-                        match rand_value {
-                            900..=920 => tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
-                            920..=940 => tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
-                            940..=960 => tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
-                            _ => tx.send(TradeData::RtnTrade("ag".to_string())).unwrap(),
-                        }
-                    }
+                    0..=99 => tx.send(TradeData::RtnMarketData("IC".to_string())).unwrap(),
+                    100..=299 => tx.send(TradeData::RtnMarketData("IF".to_string())).unwrap(),
+                    300..=399 => tx.send(TradeData::RtnMarketData("cu".to_string())).unwrap(),
+                    400..=599 => tx.send(TradeData::RtnMarketData("ag".to_string())).unwrap(),
+                    600..=699 => tx.send(TradeData::RtnOrder("IC".to_string())).unwrap(),
+                    700..=749 => tx.send(TradeData::RtnOrder("IF".to_string())).unwrap(),
+                    750..=799 => tx.send(TradeData::RtnOrder("cu".to_string())).unwrap(),
+                    800..=899 => tx.send(TradeData::RtnOrder("ag".to_string())).unwrap(),
+                    900..=919 => tx.send(TradeData::RtnTrade("IC".to_string())).unwrap(),
+                    920..=939 => tx.send(TradeData::RtnTrade("IF".to_string())).unwrap(),
+                    940..=959 => tx.send(TradeData::RtnTrade("cu".to_string())).unwrap(),
+                    _ => tx.send(TradeData::RtnTrade("ag".to_string())).unwrap(),
                 };
             }
         });
@@ -148,21 +135,21 @@ fn dispatch_data(rx: &Receiver<TradeData>, stra_group: &StrategyGroup) {
             TradeData::RtnMarketData(d) => {
                 for strategy in strategys {
                     if strategy.stra_instructions.contains(&d) {
-                        strategy.OnRtnMarketData(value);
+                        strategy.on_rtn_market_data(value);
                     }
                 }
             }
             TradeData::RtnOrder(e) => {
                 for strategy in strategys {
                     if strategy.stra_instructions.contains(&e) {
-                        strategy.OnRtnOrder(value);
+                        strategy.on_rtn_order(value);
                     }
                 }
             }
             TradeData::RtnTrade(f) => {
                 for strategy in strategys {
                     if strategy.stra_instructions.contains(&f) {
-                        strategy.OnRtnTrade(value)
+                        strategy.on_rtn_trade(value)
                     }
                 }
             }
@@ -170,7 +157,7 @@ fn dispatch_data(rx: &Receiver<TradeData>, stra_group: &StrategyGroup) {
     }
 }
 
-fn generate_strategyManager() -> StrategyManager {
+fn generate_strategy_manager() -> StrategyManager {
     let strategy_01 = Strategy::new("DSCJ".to_string(), vec!["IC".to_string(), "IF".to_string()]);
     let strategy_02 = Strategy::new("WSDJ".to_string(), vec!["IF".to_string()]);
     let strategy_03 = Strategy::new("TTTT".to_string(), vec!["ag".to_string(), "cu".to_string()]);
@@ -180,7 +167,7 @@ fn generate_strategyManager() -> StrategyManager {
 
 fn test() {
     //模拟生成相关的策略、策略group、策略管理者
-    let stra_manager = generate_strategyManager();
+    let stra_manager = generate_strategy_manager();
     // 模拟thost
     let (tx, rx) = channel::<TradeData>();
     //模拟多线程异步进行接收thost相关的行情等信息

@@ -23,7 +23,7 @@ impl ArsVersionInfo{
 // static jjj:ArsVersionInfo = ArsVersionInfo::version_init();
 
 lazy_static::lazy_static! {
-    pub static ref kkk: i32 = version_init();
+    pub static ref KKK: i32 = version_init();
 }
 
 fn version_init() -> i32 {
@@ -41,7 +41,7 @@ fn version_init() -> i32 {
 }
 
 pub fn main_build_file(){
-        // let y = *kkk;
+        let y = *KKK;
         // let y1 = *kkk;
         // let y = ArsVersionInfo::version_init();
 }
