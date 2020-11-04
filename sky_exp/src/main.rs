@@ -4,10 +4,12 @@
 
 
 use crate::exp::exp_fn::main_fn;
+use crate::exp::exp_file_open::main_file_open;
 
 pub mod exp;
 fn main() {
     fil_logger::init();
+    main_file_open();
     // main_exp_vec();
     // main_thread();
     // main_max_thread();
@@ -18,5 +20,5 @@ fn main() {
   //   let c1 = c.ceil() as usize;
   //   println!("c = {:?}",c);
   //   println!("c1 = {:?}",c1);
-    main_fn();
+  //   main_fn();
 }

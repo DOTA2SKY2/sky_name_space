@@ -37,17 +37,32 @@ fn fn_3(a: i32, b: i32) -> i32 {
 
 /**
 * create by sky at 2020/10/17 1:44 下午
-* description: 闭包
+* description: 闭包 闭包外的变量捕获借用，不获取他的所有权
 * @param
 * @return
 */
 fn fn_4(){
     let a =  vec![1];
-    let bi_bao = |x|{x == a};
+    let bi_bao = |x|{x == a}; //a的所有权没被挪走
+    // let bi_bao = move |x|{x == a}; //a的所有权挪走
     println!("{:?}",a);
     let b = vec![1];
     assert!(bi_bao(b));
+}
 
+/**
+* create by sky at 2020/10/17 1:44 下午
+* description: 闭包，闭包的参数输入，转移他的所有权
+* @param
+* @return
+*/
+
+fn fn_5(){
+    let a =  vec![1];
+    let bi_bao = |x|{x == a};
+    let b = vec![1];
+    assert!(bi_bao(b)); //b的所有权被挪走了
+    // println!("{:?}",b);
 }
 
 

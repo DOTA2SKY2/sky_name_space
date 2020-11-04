@@ -6,11 +6,12 @@
 
 use std::fs::OpenOptions;
 use std::io::Write;
+use std::fs;
 
 #[allow(dead_code)]
 
 pub fn main_file_open() {
-    test_basic();
+    test_dir();
 }
 
 #[allow(dead_code)]
@@ -29,3 +30,11 @@ fn test_basic() {
     &file.set_len(32 * 1 as u64).unwrap();
    &file.write(&piece_bytes);
 }
+const PATH_PREFIX: &str = "/Users/sky/rust_test_exp/test1";
+fn test_dir() {
+    fs::remove_dir_all(PATH_PREFIX);
+    fs::create_dir_all(PATH_PREFIX); // 没有父目录的时候，顺便生成父目录
+    fs::create_dir(PATH_PREFIX); // 没有父目录的时候，报错
+
+}
+
