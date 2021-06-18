@@ -5,11 +5,12 @@
 
 use crate::exp::exp_fn::main_fn;
 use crate::exp::exp_file_open::main_file_open;
+use crate::exp::exp_vec::main_exp_vec;
 
 pub mod exp;
 fn main() {
     fil_logger::init();
-    main_file_open();
+    // main_file_open();
     // main_exp_vec();
     // main_thread();
     // main_max_thread();
@@ -21,4 +22,19 @@ fn main() {
   //   println!("c = {:?}",c);
   //   println!("c1 = {:?}",c1);
   //   main_fn();
+  //   main_exp_vec();
+
+
+
+
+    let a= sss{
+        buf:11
+    };
+    let b= a;
+    println!("{:?}",a);
+    println!("{:?}",b);
+}
+# [derive(Debug,Clone,Copy)]
+pub struct sss {
+    buf: i32
 }

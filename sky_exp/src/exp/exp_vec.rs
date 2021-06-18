@@ -1,7 +1,9 @@
 
 use log::info;
-use std::time::SystemTime;
+use std::time::{SystemTime, Duration};
 use std::ops::{AddAssign, MulAssign};
+use std::thread;
+use std::thread::JoinHandle;
 
 // use std::str;
 #[allow(dead_code)]
@@ -23,7 +25,8 @@ pub fn main_exp_vec() {
     // vec_for4();
     // vec_for5();
     // vec_for8();
-    vec_for9();
+    // vec_for9();
+    vec_for10();
 }
 
 #[allow(dead_code)]
@@ -687,5 +690,30 @@ fn vec_for8() {
 fn vec_for9() {
     let list:Vec<u8> = vec![107, 192, 31, 128, 237, 168, 195, 233, 66, 233, 51, 23, 210, 40, 238, 61, 83, 52, 105, 18, 196, 139, 197, 234, 238, 32, 54, 175, 70, 40, 25, 27];
     info!("list =   {:x?}", list);
+}
+
+fn vec_for10() {
+    // let list:Vec<u8> = vec![107, 192, 31, 128, 237, 168, 195, 233, 66, 233, 51, 23, 210, 40, 238, 61, 83, 52, 105, 18, 196, 139, 197, 234, 238, 32, 54, 175, 70, 40, 25, 27];
+    let mut  list:Vec<JoinHandle<()>>  = vec![];
+        for _j in 0..2 {
+            test1();
+            test1();
+        }
+}
+
+fn test1() {
+    // let list:Vec<u8> = vec![107, 192, 31, 128, 237, 168, 195, 233, 66, 233, 51, 23, 210, 40, 238, 61, 83, 52, 105, 18, 196, 139, 197, 234, 238, 32, 54, 175, 70, 40, 25, 27];
+    let mut  list:Vec<JoinHandle<()>>  = vec![];
+    for _j in 0..10 {
+        let item = thread::spawn(move||{
+            thread::sleep(Duration::from_secs(2));
+            info!("list =   {:?}", thread::current().id());
+        });
+        list.push(item);
+    }
+    for item in list {
+        info!("list end=   {:?}", item.thread().id());
+        item.join().unwrap();
+    }
 }
 
