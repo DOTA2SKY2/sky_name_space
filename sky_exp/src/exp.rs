@@ -44,3 +44,4 @@ pub mod exp_arc;
 pub mod exp_trait;
 pub mod exp_once_cell;
 pub mod exp_max_thread;
+pub mod exp_tokio;

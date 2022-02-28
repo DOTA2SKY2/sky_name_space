@@ -42,10 +42,12 @@ fn main() {
     // s1 = s2;
     // println!("{}", s1);
 
-    let x = &temp(); // temp 函数调用是一个无效的位置表达式
-    let y = *x ;    // error[E0070]:invalid left-hand side expression
-    println!("{:p}", x);
-    println!("{:p}", &temp());
+    // let x = &temp(); // temp 函数调用是一个无效的位置表达式
+    // let y = *x ;    // error[E0070]:invalid left-hand side expression
+    // println!("{:p}", x);
+    // println!("{:p}", &temp());
+
+    exp::exp_tokio::sky_tokio();
 }
 
 pub fn temp() -> i32 {
