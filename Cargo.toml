@@ -3,5 +3,7 @@
 members = [
     "sky_exp",
     "lib1",
+    "sky_tokio",
+    "sky_ordering"
 ]
 

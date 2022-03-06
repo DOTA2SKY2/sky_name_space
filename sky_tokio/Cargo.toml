@@ -1,0 +1,22 @@
+[package]
+name = "sky_tokio"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio-stream = "0.1.8"
+
+[dependencies.tokio-test]
+version = "0.4.2"
+
+[dependencies.tokio]
+version = "1.17.0"
+features = ["full"]
+
+
+
+
+#[[example]]
+#name = "exp_tokio"
