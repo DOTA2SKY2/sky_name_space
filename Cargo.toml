@@ -2,10 +2,10 @@
 
 members = [
     "sky_exp",
-    "lib1",
-    "sky_tokio",
-    "sky_ordering",
-    "sky_rayon",
-    "add"
+#    "lib1",
+#    "sky_tokio",
+#    "sky_ordering",
+#    "sky_rayon",
+#    "add"
 ]
 
