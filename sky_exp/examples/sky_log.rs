@@ -1,6 +1,23 @@
+use std::any::type_name_of_val;
+
 #[allow(dead_code)]
 fn main() {
-    test_1();
+    // test_1();
+    let a = vec![1u32;4];
+    println!("a = {:?}", a);
+    println!("type_name_of_val = {}",  type_name_of_val(&a)) ;
+    println!("size_of_val = {}", std::mem::size_of_val(&a)) ;
+    let b: &[u8] = unchecked_cast(&a);
+
+
+    println!("b = {:?}", b);
+
+    let c: &[u32] = unchecked_cast(&b);
+    println!("c = {:?}", c);
+    fn unchecked_cast<A, B>(a: &[A]) -> &[B] {
+        let new_len = std::mem::size_of_val(a) / std::mem::size_of::<B>();
+        unsafe { std::slice::from_raw_parts(a.as_ptr() as *const B, new_len) }
+    }
 
 }
 
