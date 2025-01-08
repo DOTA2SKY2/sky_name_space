@@ -26,17 +26,19 @@ fn main() {
 
     let mut map: HashMap<u8, Arc<Mutex<dyn Foo>>> = HashMap::new();
     map.insert(8u8, a);
-    for _ in (0..2) {
+
+    for _ in 0..3 {
         let a = map.get(&8u8).expect("boom").clone();
         thread::spawn(move || {
+            let tid =  thread::current().id();
+            println!("thread::{:?}",tid);
+
             let result = a.lock().ok().expect("boom indeed").get_foo();
-            println!("Result: {}", result);
+            println!("thread::{:?}; Result: {}",  tid, result);
         });
     }
+
     let a1 = map.get(&8u8).expect("boom").clone();
-    let _sl = a1.lock().unwrap();
-    //  let data1 = *data ;
-    // let re = cs.get_foo();
-    // println!("{:?}",re);
-    thread::sleep(Duration::from_millis(200));
+    println!("main thread::{:?}, Result:{:?}", thread::current().id(), a1.lock().ok().expect("main thread").get_foo());
+    thread::sleep(Duration::from_secs(2));
 }

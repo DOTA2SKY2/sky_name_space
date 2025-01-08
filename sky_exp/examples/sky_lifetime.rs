@@ -1,12 +1,12 @@
-#[allow(dead_code)]
+// #[allow(dead_code)]
 
+#![allow(unused)]
 fn main() {
-    test_1();
-}
-
-// Option 泛型
-fn test_1() {
 
 }
+
+
+
+
 
 

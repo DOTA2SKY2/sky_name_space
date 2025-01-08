@@ -2,9 +2,9 @@
 name = "sky_exp"
 version = "0.1.0"
 authors = ["sky <sky.wu@arsyun.com>"]
-edition = "2018"
+edition = "2021"
 build = "build.rs"
-repository = "https://github.com/filecoin-project/bellman"
+repository = "https://github.com/DOTA2SKY2/sky_name_space.git"
 #proc-macro = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -35,6 +35,7 @@ once_cell = "1.3.1"
 
 tokio = { version = "1.17.0", features = ["full"] }
 tokio-test = { version = "0.4.2" }
+env_logger = "0.11.5"
 
 [dependencies.time]
 version = "0.1.43"

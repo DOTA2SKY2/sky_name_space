@@ -32,9 +32,9 @@ fn test_basic() {
 }
 const PATH_PREFIX: &str = "/Users/sky/rust_test_exp/test1";
 fn test_dir() {
-    fs::remove_dir_all(PATH_PREFIX);
-    fs::create_dir_all(PATH_PREFIX); // 没有父目录的时候，顺便生成父目录
-    fs::create_dir(PATH_PREFIX); // 没有父目录的时候，报错
+    fs::remove_dir_all(PATH_PREFIX).expect("TODO: panic message");
+    fs::create_dir_all(PATH_PREFIX).expect("TODO: panic message"); // 没有父目录的时候，顺便生成父目录
+    fs::create_dir(PATH_PREFIX).expect("TODO: panic message"); // 没有父目录的时候，报错
 
 }
 

@@ -39,7 +39,10 @@ fn version_init() -> i32 {
         info!("Ars Rust Version  描述:            {}", env!("CARGO_PKG_DESCRIPTION"));
         1
 }
+
+// RUST_LOG=debug cargo run --package sky_exp --example sky_build_file
 fn main(){
+        env_logger::init();
         let y = *KKK;
         // let y1 = *kkk;
         // let y = ArsVersionInfo::version_init();
